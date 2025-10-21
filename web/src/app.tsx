@@ -112,7 +112,7 @@ const Dashboard: React.FC = () => {
           <KpiGrid
             kpis={kpis.data || null}
             isLoading={isLoading}
-            error={error}
+            error={error as Error | null}
           />
         </div>
 
@@ -121,7 +121,7 @@ const Dashboard: React.FC = () => {
           <ChartCard
             title="Visitors & Signups"
             isLoading={visitorsTimeSeries.isLoading || signupsTimeSeries.isLoading}
-            error={visitorsTimeSeries.error || signupsTimeSeries.error}
+            error={(visitorsTimeSeries.error || signupsTimeSeries.error) as Error | null}
           >
             <VisitorsSignupsChart
               visitorsData={visitorsTimeSeries.data || []}
@@ -133,7 +133,7 @@ const Dashboard: React.FC = () => {
           <ChartCard
             title="Revenue"
             isLoading={revenueTimeSeries.isLoading}
-            error={revenueTimeSeries.error}
+            error={revenueTimeSeries.error as Error | null}
           >
             <RevenueChart
               data={revenueTimeSeries.data || []}
@@ -158,7 +158,7 @@ const Dashboard: React.FC = () => {
           <ChartCard
             title="Device Breakdown"
             isLoading={deviceBreakdown.isLoading}
-            error={deviceBreakdown.error}
+            error={deviceBreakdown.error as Error | null}
           >
             <DeviceBreakdownChart
               data={deviceBreakdown.data || []}

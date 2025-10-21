@@ -13,8 +13,16 @@ const SERVICES = [
 
 // Simple seeded random number generator for deterministic results
 export function seededRandom(seed) {
-  const x = Math.sin(seed) * 10000;
-  return x - Math.floor(x);
+  // Convert string seed to number
+  const seedNum = typeof seed === 'string'
+    ? seed.split('').reduce((a, b) => {
+        a = ((a << 5) - a) + b.charCodeAt(0);
+        return a & a;
+      }, 0)
+    : seed;
+
+  const x = Math.sin(seedNum) * 10000;
+  return Math.abs(x - Math.floor(x));
 }
 
 // Generate date range for time series data
@@ -106,15 +114,15 @@ export function generateTimeSeries(metric, interval = 'day', range = '7d') {
 }
 
 function getBaseValueForMetric(metric, index, totalDays) {
-  const baseValues = {
-    visitors: 1000 + (index * 30),
-    signups: 50 + (index * 2),
-    revenue: 1250 + (index * 40),
-    latencyMs: 150,
-    errors: 5
-  };
-  return baseValues[metric] || 0;
-}
+   const baseValues = {
+     visitors: 1000 + (index * 30),
+     signups: 50 + (index * 2),
+     revenue: 1250 + (index * 40),
+     latencyMs: 150,
+     errors: 5
+   };
+   return baseValues[metric] || 1000; // Default fallback value
+ }
 
 // Generate breakdown data by category
 export function generateBreakdown(category, range = '7d') {
@@ -136,19 +144,12 @@ export function generateBreakdown(category, range = '7d') {
       categories = [];
   }
 
-  const total = categories.reduce((sum, cat) => {
-    const seed = baseSeed + cat;
-    return sum + (seededRandom(seed) * 100);
-  }, 0);
-
   return categories.map(cat => {
     const seed = baseSeed + cat;
-    const value = seededRandom(seed) * 100;
-    const percentage = Math.round((value / total) * 100);
-
+    const value = (seededRandom(seed) * 100) + 10; // Ensure minimum value
     return {
       label: cat.charAt(0).toUpperCase() + cat.slice(1),
-      value: percentage
+      value: Math.round(value)
     };
   }).sort((a, b) => b.value - a.value);
 }
@@ -163,12 +164,16 @@ export function generateEvents(limit = 50) {
     const timestamp = new Date();
     timestamp.setMinutes(timestamp.getMinutes() - (i * 15)); // Spread events over time
 
+    const serviceIndex = Math.floor(seededRandom(eventSeed + 'service') * SERVICES.length);
+    const severityIndex = Math.floor(seededRandom(eventSeed + 'severity') * SEVERITY_LEVELS.length);
+    const messageIndex = Math.floor(seededRandom(eventSeed + 'message') * 10);
+
     events.push({
       id: `evt_${i + 1}`,
       time: timestamp.toISOString(),
-      service: SERVICES[Math.floor(seededRandom(eventSeed + 'service') * SERVICES.length)],
-      severity: SEVERITY_LEVELS[Math.floor(seededRandom(eventSeed + 'severity') * SEVERITY_LEVELS.length)],
-      message: generateEventMessage(eventSeed)
+      service: SERVICES[serviceIndex] || 'api-gateway',
+      severity: SEVERITY_LEVELS[severityIndex] || 'medium',
+      message: generateEventMessage(eventSeed + 'message')
     });
   }
 
