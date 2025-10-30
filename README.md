@@ -1,6 +1,10 @@
 # Mini Analytics Dashboard
 
 A lightweight, full-stack analytics dashboard built with React + TypeScript, Recharts, and Node.js/Express. Features real-time KPI monitoring, time-series charts, category breakdowns, and event logging with client-side caching and performance optimizations.
+## 📸 Screenshots
+
+![Desktop Dashboard](./public/analytics-dashboard.png)
+
 
 ## 🚀 Features
 
