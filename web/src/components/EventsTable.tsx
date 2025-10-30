@@ -11,23 +11,23 @@ interface SeverityBadgeProps {
 const SeverityBadge: React.FC<SeverityBadgeProps> = ({ severity, className = '' }) => {
   const severityConfig = {
     low: {
-      color: theme.colors.gray[500],
-      bgColor: theme.colors.gray[100],
-      dotColor: theme.colors.gray[400],
+      color: '#cbd5f5',
+      bgColor: 'rgba(148, 163, 184, 0.16)',
+      dotColor: '#94a3b8',
     },
     medium: {
-      color: theme.colors.warning[700],
-      bgColor: theme.colors.warning[100],
-      dotColor: theme.colors.warning[500],
+      color: theme.colors.warning[500],
+      bgColor: 'rgba(251, 191, 36, 0.14)',
+      dotColor: theme.colors.warning[600],
     },
     high: {
-      color: theme.colors.error[700],
-      bgColor: theme.colors.error[100],
+      color: '#f87171',
+      bgColor: 'rgba(248, 113, 113, 0.14)',
       dotColor: theme.colors.error[500],
     },
     critical: {
-      color: theme.colors.error[800],
-      bgColor: theme.colors.error[200],
+      color: '#f87171',
+      bgColor: 'rgba(239, 68, 68, 0.2)',
       dotColor: theme.colors.error[600],
     },
   };
@@ -78,9 +78,11 @@ interface EventRowProps {
 const EventRow: React.FC<EventRowProps> = ({ event, style, isSelected = false, onClick }) => {
   return (
     <div
-      className={`grid grid-cols-12 gap-4 p-3 text-sm border-b border-gray-100 hover:bg-gray-50 cursor-pointer transition-colors ${
-        isSelected ? 'bg-blue-50 border-blue-200' : ''
-      }`}
+      className={`grid grid-cols-12 gap-4 border-b border-slate-800/60 p-3 text-sm transition-colors ${
+        isSelected
+          ? 'bg-sky-500/15 border-sky-500/40'
+          : 'hover:bg-slate-800/50'
+      } cursor-pointer`}
       style={style}
       onClick={onClick}
       role="row"
@@ -92,19 +94,19 @@ const EventRow: React.FC<EventRowProps> = ({ event, style, isSelected = false, o
         }
       }}
     >
-      <div className="col-span-3 font-mono text-xs text-gray-500">
+      <div className="col-span-3 font-mono text-xs text-slate-500">
         {event.id}
       </div>
       <div className="col-span-2">
         <SeverityBadge severity={event.severity} />
       </div>
-      <div className="col-span-2 font-medium text-gray-900">
+      <div className="col-span-2 font-medium text-slate-200">
         {event.service}
       </div>
-      <div className="col-span-3 text-gray-600">
+      <div className="col-span-3 text-slate-300">
         {event.message}
       </div>
-      <div className="col-span-2 text-gray-500">
+      <div className="col-span-2 text-slate-500">
         {formatTimestamp(event.time)}
       </div>
     </div>
@@ -140,10 +142,10 @@ const EventsFilter: React.FC<EventsFilterProps> = ({
   ];
 
   return (
-    <div className="flex flex-col sm:flex-row gap-4 mb-6 p-4 bg-gray-50 rounded-lg">
+    <div className="mb-6 flex flex-col gap-4 rounded-2xl border border-slate-800/60 bg-slate-900/50 p-4 sm:flex-row">
       {/* Search input */}
       <div className="flex-1">
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="mb-1 block text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">
           Search Events
         </label>
         <input
@@ -151,19 +153,19 @@ const EventsFilter: React.FC<EventsFilterProps> = ({
           placeholder="Search by message or ID..."
           value={searchTerm}
           onChange={(e) => onSearchChange(e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          className="w-full rounded-xl border border-slate-800/70 bg-slate-950/70 px-3 py-2 text-sm text-slate-200 placeholder:text-slate-500 focus:border-sky-400/60 focus:outline-none focus:ring-2 focus:ring-sky-500/30"
         />
       </div>
 
       {/* Severity filter */}
       <div className="sm:w-48">
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="mb-1 block text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">
           Severity
         </label>
         <select
           value={severityFilter}
           onChange={(e) => onSeverityFilterChange(e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          className="w-full rounded-xl border border-slate-800/70 bg-slate-950/70 px-3 py-2 text-sm text-slate-200 focus:border-sky-400/60 focus:outline-none focus:ring-2 focus:ring-sky-500/30"
         >
           {severityOptions.map((option) => (
             <option key={option.value} value={option.value}>
@@ -175,13 +177,13 @@ const EventsFilter: React.FC<EventsFilterProps> = ({
 
       {/* Service filter */}
       <div className="sm:w-48">
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="mb-1 block text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">
           Service
         </label>
         <select
           value={serviceFilter}
           onChange={(e) => onServiceFilterChange(e.target.value)}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          className="w-full rounded-xl border border-slate-800/70 bg-slate-950/70 px-3 py-2 text-sm text-slate-200 focus:border-sky-400/60 focus:outline-none focus:ring-2 focus:ring-sky-500/30"
         >
           <option value="">All Services</option>
           {availableServices.map((service) => (
@@ -244,7 +246,7 @@ const VirtualizedTable: React.FC<VirtualizedTableProps> = ({
 // Table header component
 const EventsTableHeader: React.FC = () => {
   return (
-    <div className="grid grid-cols-12 gap-4 p-3 bg-gray-50 border-b border-gray-200 text-sm font-medium text-gray-700">
+    <div className="grid grid-cols-12 gap-4 border-b border-slate-800/70 bg-slate-900/60 p-3 text-xs font-semibold uppercase tracking-[0.3em] text-slate-400">
       <div className="col-span-3">Event ID</div>
       <div className="col-span-2">Severity</div>
       <div className="col-span-2">Service</div>
@@ -298,22 +300,23 @@ export const EventsTable: React.FC<EventsTableProps> = ({
     filtered.sort((a, b) => new Date(b.time).getTime() - new Date(a.time).getTime());
 
     const endTime = performance.now();
-    console.log(`Filtered ${events.length} events in ${endTime - startTime}ms`);
+    if (process.env.NODE_ENV === 'development') {
+      console.log(`Filtered ${events.length} events in ${endTime - startTime}ms`);
+    }
 
     return filtered;
   }, [events, searchTerm, severityFilter, serviceFilter]);
 
   if (isLoading) {
     return (
-      <div className={`bg-white rounded-lg border border-gray-200 ${className}`}>
-        <div className="p-6">
-          <div className="animate-pulse">
-            <div className="h-4 bg-gray-200 rounded w-32 mb-4"></div>
-            <div className="space-y-3">
-              {[...Array(5)].map((_, i) => (
-                <div key={i} className="h-12 bg-gray-200 rounded"></div>
-              ))}
-            </div>
+      <div className={`relative overflow-hidden rounded-3xl border border-slate-800/60 bg-slate-900/50 p-6 ${className}`}>
+        <div className="pointer-events-none absolute inset-0 opacity-80" style={{ background: theme.gradients.card }} />
+        <div className="relative space-y-4">
+          <div className="h-4 w-32 rounded bg-slate-800/70"></div>
+          <div className="space-y-3">
+            {[...Array(5)].map((_, i) => (
+              <div key={i} className="h-12 rounded-2xl border border-slate-800/70 bg-slate-900/60 animate-pulse"></div>
+            ))}
           </div>
         </div>
       </div>
@@ -322,21 +325,26 @@ export const EventsTable: React.FC<EventsTableProps> = ({
 
   if (error) {
     return (
-      <div className={`bg-white rounded-lg border border-red-200 ${className}`}>
-        <div className="p-6 text-center">
-          <div className="text-red-600 mb-2">Failed to load events</div>
-          <div className="text-red-500 text-sm">{error.message}</div>
+      <div className={`relative overflow-hidden rounded-3xl border border-rose-500/40 bg-slate-900/60 p-6 ${className}`}>
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-rose-500/20 to-transparent" />
+        <div className="relative space-y-2 text-center text-sm text-rose-100">
+          <div className="text-base font-semibold">Failed to load events</div>
+          <div className="text-rose-200/80">{error.message}</div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className={`bg-white rounded-lg border border-gray-200 ${className}`}>
-      <div className="p-6">
-        <div className="flex items-center justify-between mb-6">
-          <h3 className="text-lg font-semibold text-gray-900">Recent Events</h3>
-          <div className="text-sm text-gray-500">
+    <div className={`relative overflow-hidden rounded-3xl border border-slate-800/60 bg-slate-900/50 ${className}`}>
+      <div className="pointer-events-none absolute inset-0 opacity-80" style={{ background: theme.gradients.card }} />
+      <div className="relative p-6">
+        <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h3 className="text-lg font-semibold text-white">Recent Events</h3>
+            <div className="mt-2 h-px w-20 bg-gradient-to-r from-sky-500 to-transparent" />
+          </div>
+          <div className="text-sm text-slate-400">
             {filteredEvents.length} of {events.length} events
           </div>
         </div>
@@ -351,11 +359,11 @@ export const EventsTable: React.FC<EventsTableProps> = ({
           availableServices={availableServices}
         />
 
-        <div className="border border-gray-200 rounded-lg overflow-hidden">
+        <div className="overflow-hidden rounded-2xl border border-slate-800/70 bg-slate-950/30">
           <EventsTableHeader />
 
           {filteredEvents.length === 0 ? (
-            <div className="p-8 text-center text-gray-500">
+            <div className="p-8 text-center text-slate-400">
               {searchTerm || severityFilter || serviceFilter
                 ? 'No events match your filters'
                 : 'No events available'
@@ -377,7 +385,7 @@ export const EventsTable: React.FC<EventsTableProps> = ({
                   )}
                 />
               )}
-              className="border-t border-gray-200"
+              className="border-t border-slate-800/70"
             />
           )}
         </div>

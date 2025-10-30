@@ -36,18 +36,22 @@ const RangeSelector: React.FC<{
   ];
 
   return (
-    <div className="flex items-center space-x-2">
-      <span className="text-sm font-medium text-gray-700">Period:</span>
-      <div className="flex rounded-lg border border-gray-300 p-1">
+    <div className="flex items-center gap-3">
+      <span className="text-[0.65rem] uppercase tracking-[0.38em] text-slate-400">
+        Period
+      </span>
+      <div className="flex items-center gap-1 rounded-full border border-slate-700/70 bg-slate-900/70 p-1 shadow-inner shadow-slate-900/40 backdrop-blur">
         {ranges.map((range) => (
           <button
             key={range.value}
+            type="button"
             onClick={() => onRangeChange(range.value)}
-            className={`px-3 py-1 text-sm font-medium rounded transition-colors ${
+            className={`rounded-full px-4 py-1.5 text-sm font-medium transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-400 ${
               selectedRange === range.value
-                ? 'bg-blue-600 text-white shadow-sm'
-                : 'text-gray-700 hover:bg-gray-50'
+                ? 'bg-gradient-to-r from-blue-500 via-sky-500 to-cyan-400 text-white shadow-[0_0_0_1px_rgba(56,189,248,0.35)]'
+                : 'text-slate-400 hover:bg-slate-800/70 hover:text-slate-100'
             }`}
+            aria-pressed={selectedRange === range.value}
           >
             {range.label}
           </button>
@@ -58,22 +62,55 @@ const RangeSelector: React.FC<{
 };
 
 // Header component
-const Header: React.FC = () => (
-  <header className="bg-white border-b border-gray-200 px-6 py-4">
-    <div className="flex items-center justify-between">
-      <div className="flex items-center space-x-4">
-        <div className="flex items-center space-x-2">
-          <div className="h-8 w-8 bg-blue-600 rounded flex items-center justify-center">
-            <svg className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-            </svg>
-          </div>
-          <h1 className="text-xl font-semibold text-gray-900">Analytics Dashboard</h1>
+interface HeaderProps {
+  selectedRange: string;
+  onRangeChange: (range: string) => void;
+}
+
+const Header: React.FC<HeaderProps> = ({ selectedRange, onRangeChange }) => (
+  <header className="relative overflow-hidden rounded-3xl border border-slate-800/60 bg-slate-900/40 px-8 py-10 shadow-[0_35px_120px_-40px_rgba(14,165,233,0.45)]">
+    <div
+      className="pointer-events-none absolute inset-0 opacity-90"
+      style={{ background: theme.gradients.card }}
+    />
+    <div className="pointer-events-none absolute -top-20 -right-10 h-48 w-48 rounded-full bg-sky-500/30 blur-3xl" />
+    <div className="pointer-events-none absolute bottom-[-4.5rem] left-1/3 h-44 w-44 rounded-full bg-indigo-500/20 blur-3xl" />
+
+    <div className="relative flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
+      <div className="space-y-4">
+        <span className="inline-flex items-center gap-2 rounded-full border border-slate-700/70 bg-slate-900/50 px-4 py-1 text-xs font-semibold uppercase tracking-[0.4em] text-slate-400">
+          KPI Control Room
+        </span>
+        <div className="space-y-3">
+          <h1 className="text-3xl font-semibold text-white md:text-4xl">
+            <span className="bg-gradient-to-r from-blue-400 via-sky-300 to-cyan-200 bg-clip-text text-transparent">
+              Real-time Growth Metrics
+            </span>
+          </h1>
+          <p className="max-w-xl text-sm text-slate-300">
+            Monitor acquisition, activation, and platform health from a single vantage point.
+            Stay ahead with instant visibility into the signals that matter most.
+          </p>
         </div>
       </div>
 
-      <div className="flex items-center space-x-4">
-        <RangeSelector selectedRange="7d" onRangeChange={() => {}} />
+      <div className="flex flex-col items-start gap-4 md:items-end">
+        <RangeSelector selectedRange={selectedRange} onRangeChange={onRangeChange} />
+        <div className="flex items-center gap-4 text-xs text-slate-400">
+          <div className="flex items-center gap-2">
+            <span className="relative flex h-3 w-3">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-sky-400 opacity-75" />
+              <span className="relative inline-flex h-3 w-3 rounded-full bg-sky-300" />
+            </span>
+            Live data sync
+          </div>
+          <div className="flex items-center gap-2">
+            <svg className="h-4 w-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6h13M4 12h9m-9 6h6m9-3 3-3-3-3m3 3h-8" />
+            </svg>
+            Automated alerts enabled
+          </div>
+        </div>
       </div>
     </div>
   </header>
@@ -95,18 +132,26 @@ const Dashboard: React.FC = () => {
   } = useDashboardData(selectedRange);
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Header />
+    <div className="relative min-h-screen overflow-hidden text-slate-100">
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute -left-24 top-10 h-72 w-72 rounded-full bg-blue-600/15 blur-3xl" />
+        <div className="absolute right-0 top-1/3 h-64 w-64 translate-x-1/2 rounded-full bg-sky-500/10 blur-[120px]" />
+        <div className="absolute bottom-0 left-1/3 h-80 w-80 rounded-full bg-indigo-500/15 blur-[100px]" />
+      </div>
 
-      <main className="px-6 py-8">
-        {/* KPI Cards Section */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-lg font-semibold text-gray-900">Key Metrics</h2>
-            <RangeSelector
-              selectedRange={selectedRange}
-              onRangeChange={setSelectedRange}
-            />
+      <main className="relative z-10 mx-auto flex max-w-7xl flex-col gap-10 px-6 py-10">
+        <Header selectedRange={selectedRange} onRangeChange={setSelectedRange} />
+
+        <section className="space-y-6">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <h2 className="text-lg font-semibold text-white md:text-xl">Key Metrics</h2>
+              <p className="text-sm text-slate-400">
+                A pulse on acquisition, monetization, and platform reliability.
+              </p>
+            </div>
+
+            <RangeSelector selectedRange={selectedRange} onRangeChange={setSelectedRange} />
           </div>
 
           <KpiGrid
@@ -114,10 +159,9 @@ const Dashboard: React.FC = () => {
             isLoading={isLoading}
             error={error as Error | null}
           />
-        </div>
+        </section>
 
-        {/* Charts Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+        <section className="grid grid-cols-1 gap-8 lg:grid-cols-2">
           <ChartCard
             title="Visitors & Signups"
             isLoading={visitorsTimeSeries.isLoading || signupsTimeSeries.isLoading}
@@ -140,9 +184,9 @@ const Dashboard: React.FC = () => {
               height={256}
             />
           </ChartCard>
-        </div>
+        </section>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+        <section className="grid grid-cols-1 gap-8 lg:grid-cols-2">
           <ChartCard
             title="Traffic Sources"
             isLoading={sourceBreakdown.isLoading}
@@ -166,13 +210,15 @@ const Dashboard: React.FC = () => {
               variant="donut"
             />
           </ChartCard>
-        </div>
+        </section>
 
-        <EventsTable
-          events={events.data || []}
-          isLoading={events.isLoading}
-          error={events.error as Error | null}
-        />
+        <section>
+          <EventsTable
+            events={events.data || []}
+            isLoading={events.isLoading}
+            error={events.error as Error | null}
+          />
+        </section>
       </main>
     </div>
   );

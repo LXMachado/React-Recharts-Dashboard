@@ -35,7 +35,7 @@ const formatDate = (dateString: string): string => {
 const AreaGradient = ({ id, color }: { id: string; color: string }) => (
   <defs>
     <linearGradient id={id} x1="0" y1="0" x2="0" y2="1">
-      <stop offset="5%" stopColor={color} stopOpacity={0.3} />
+      <stop offset="5%" stopColor={color} stopOpacity={0.35} />
       <stop offset="95%" stopColor={color} stopOpacity={0.05} />
     </linearGradient>
   </defs>
@@ -65,7 +65,7 @@ export const AreaChart: React.FC<AreaChartProps> = ({
   if (!data || data.length === 0) {
     return (
       <ChartContainer height={height} className={className}>
-        <div className="flex items-center justify-center h-full text-gray-500">
+        <div className="flex h-full items-center justify-center text-sm text-slate-500">
           No data available
         </div>
       </ChartContainer>
@@ -89,8 +89,7 @@ export const AreaChart: React.FC<AreaChartProps> = ({
           {showGrid && (
             <CartesianGrid
               strokeDasharray="3 3"
-              stroke={theme.colors.gray[200]}
-              opacity={0.5}
+              stroke="rgba(148, 163, 184, 0.14)"
             />
           )}
 
@@ -98,14 +97,14 @@ export const AreaChart: React.FC<AreaChartProps> = ({
             dataKey="displayDate"
             axisLine={false}
             tickLine={false}
-            tick={{ fontSize: 12, fill: theme.colors.gray[600] }}
+            tick={{ fontSize: 12, fill: 'rgba(226, 232, 240, 0.75)' }}
             dy={10}
           />
 
           <YAxis
             axisLine={false}
             tickLine={false}
-            tick={{ fontSize: 12, fill: theme.colors.gray[600] }}
+            tick={{ fontSize: 12, fill: 'rgba(226, 232, 240, 0.75)' }}
             tickFormatter={(value) => formatValue(value)}
             dx={-10}
           />
@@ -114,13 +113,13 @@ export const AreaChart: React.FC<AreaChartProps> = ({
             type="monotone"
             dataKey={dataKey}
             stroke={color}
-            strokeWidth={2}
+            strokeWidth={2.5}
             fill={`url(#${gradientId})`}
             name={name}
             activeDot={{
               r: 6,
               fill: color,
-              stroke: theme.colors.gray[100],
+              stroke: '#020617',
               strokeWidth: 2,
               className: 'animate-pulse',
             }}

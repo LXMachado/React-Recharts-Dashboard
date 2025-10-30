@@ -1,11 +1,11 @@
-import React, { Suspense, useState } from 'react';
-import { theme } from '../lib/theme';
+import React from 'react';
+import { theme, chartColors as themeChartColors } from '../lib/theme';
 
 // Loading skeleton for charts
 const ChartSkeleton: React.FC = () => (
-  <div className="animate-pulse">
-    <div className="h-4 bg-gray-200 rounded w-32 mb-4"></div>
-    <div className="h-64 bg-gray-200 rounded"></div>
+  <div className="space-y-4 animate-pulse">
+    <div className="h-4 w-36 rounded bg-slate-800/80" />
+    <div className="h-64 rounded-2xl border border-slate-800/60 bg-slate-900/60" />
   </div>
 );
 
@@ -16,14 +16,14 @@ interface ChartErrorProps {
 }
 
 const ChartError: React.FC<ChartErrorProps> = ({ error, title }) => (
-  <div className="flex flex-col items-center justify-center h-64 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300">
-    <svg className="h-12 w-12 text-gray-400 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+  <div className="flex h-64 flex-col items-center justify-center gap-3 rounded-2xl border border-rose-500/40 bg-slate-900/60 text-rose-200">
+    <svg className="h-12 w-12 text-rose-300/80" fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
     </svg>
-    <p className="text-gray-500 text-sm text-center mb-2">
-      Failed to load {title.toLowerCase()}
+    <p className="text-xs uppercase tracking-[0.35em] text-rose-200/80">
+      {title}
     </p>
-    <p className="text-gray-400 text-xs text-center">
+    <p className="px-6 text-center text-sm text-rose-100/80">
       {error.message}
     </p>
   </div>
@@ -48,17 +48,29 @@ export const ChartCard: React.FC<ChartCardProps> = ({
   actions,
 }) => {
   return (
-    <div className={`bg-white rounded-lg border border-gray-200 p-6 ${className}`}>
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
-        {actions && <div className="flex items-center space-x-2">{actions}</div>}
+    <div
+      className={`group relative overflow-hidden rounded-3xl border border-slate-800/60 bg-slate-900/50 p-6 shadow-[0_45px_120px_-60px_rgba(56,189,248,0.5)] transition-all duration-300 hover:-translate-y-1 hover:border-slate-700 ${className}`}
+    >
+      <div
+        className="pointer-events-none absolute inset-0 opacity-80 transition-opacity duration-300 group-hover:opacity-100"
+        style={{ background: theme.gradients.card }}
+      />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-sky-500/60 to-transparent" />
+      <div className="pointer-events-none absolute -top-24 right-0 h-52 w-52 rounded-full bg-sky-500/15 blur-3xl" />
+
+      <div className="relative mb-6 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+        <div>
+          <h3 className="text-lg font-semibold text-white">{title}</h3>
+          <div className="mt-2 h-px w-16 bg-gradient-to-r from-sky-500 to-transparent" />
+        </div>
+        {actions && <div className="flex items-center gap-2">{actions}</div>}
       </div>
 
       <div className="relative">
         {isLoading && <ChartSkeleton />}
         {error && <ChartError error={error} title={title} />}
         {!isLoading && !error && (
-          <div className="focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2 rounded">
+          <div className="rounded-2xl bg-slate-950/20 p-3 focus-within:ring-2 focus-within:ring-sky-400/60 focus-within:ring-offset-2 focus-within:ring-offset-slate-900/40">
             {children}
           </div>
         )}
@@ -112,10 +124,10 @@ export const CustomTooltip: React.FC<CustomTooltipProps> = ({
 }) => {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-white p-3 border border-gray-200 rounded-lg shadow-lg">
-        <p className="text-sm font-medium text-gray-900 mb-2">{label}</p>
+      <div className="min-w-[160px] rounded-2xl border border-slate-800/60 bg-slate-900/90 p-3 shadow-xl shadow-slate-900/60 backdrop-blur">
+        <p className="mb-2 text-sm font-medium text-slate-200">{label}</p>
         {payload.map((entry, index) => (
-          <p key={index} className="text-sm" style={{ color: entry.color }}>
+          <p key={index} className="text-sm text-slate-300" style={{ color: entry.color }}>
             {`${entry.name}: ${formatValue(entry.value)}`}
           </p>
         ))}
@@ -138,14 +150,11 @@ export const ChartLegend: React.FC<LegendProps> = ({ payload, className = '' }) 
   if (!payload) return null;
 
   return (
-    <div className={`flex flex-wrap justify-center gap-4 mt-4 ${className}`}>
+    <div className={`mt-4 flex flex-wrap justify-center gap-4 ${className}`}>
       {payload.map((entry, index) => (
-        <div key={index} className="flex items-center space-x-2">
-          <div
-            className="w-3 h-3 rounded"
-            style={{ backgroundColor: entry.color }}
-          />
-          <span className="text-sm text-gray-700">{entry.value}</span>
+        <div key={index} className="flex items-center gap-2 rounded-full border border-slate-800/60 bg-slate-900/60 px-3 py-1.5">
+          <div className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: entry.color }} />
+          <span className="text-xs font-medium uppercase tracking-[0.2em] text-slate-300">{entry.value}</span>
         </div>
       ))}
     </div>
@@ -201,17 +210,6 @@ export const chartUtils = {
 
   // Generate color palette for charts
   getColorPalette: (count: number): string[] => {
-    const baseColors = [
-      theme.colors.primary[500],
-      theme.colors.success[500],
-      theme.colors.warning[500],
-      theme.colors.error[500],
-      '#8b5cf6', // purple
-      '#06b6d4', // cyan
-      '#f97316', // orange
-      '#84cc16', // lime
-    ];
-
-    return baseColors.slice(0, count);
+    return themeChartColors.slice(0, count);
   },
 };

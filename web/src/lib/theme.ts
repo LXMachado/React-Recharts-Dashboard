@@ -3,32 +3,32 @@
 export const theme = {
   colors: {
     primary: {
-      50: '#eff6ff',
-      100: '#dbeafe',
-      500: '#3b82f6',
-      600: '#2563eb',
-      900: '#1e3a8a',
+      50: '#1e3a8a',
+      100: '#1d4ed8',
+      500: '#2563eb',
+      600: '#1e40af',
+      900: '#0b1f44',
     },
     success: {
-      50: '#f0fdf4',
-      100: '#dcfce7',
-      500: '#22c55e',
-      600: '#16a34a',
-      900: '#14532d',
+      50: '#0f2d2a',
+      100: '#065f46',
+      500: '#10b981',
+      600: '#059669',
+      900: '#064e3b',
     },
     warning: {
-      50: '#fffbeb',
-      100: '#fef3c7',
-      200: '#fde68a',
-      500: '#f59e0b',
-      600: '#d97706',
-      700: '#b45309',
+      50: '#2d1f09',
+      100: '#7c3e07',
+      200: '#f59e0b',
+      500: '#fbbf24',
+      600: '#f59e0b',
+      700: '#d97706',
       900: '#92400e',
     },
     error: {
-      50: '#fef2f2',
-      100: '#fee2e2',
-      200: '#fecaca',
+      50: '#2d0f10',
+      100: '#7f1d1d',
+      200: '#b91c1c',
       500: '#ef4444',
       600: '#dc2626',
       700: '#b91c1c',
@@ -36,17 +36,36 @@ export const theme = {
       900: '#7f1d1d',
     },
     gray: {
-      50: '#f9fafb',
-      100: '#f3f4f6',
-      200: '#e5e7eb',
-      300: '#d1d5db',
-      400: '#9ca3af',
-      500: '#6b7280',
-      600: '#4b5563',
-      700: '#374151',
-      800: '#1f2937',
-      900: '#111827',
+      50: '#f8fafc',
+      100: '#e2e8f0',
+      200: '#cbd5f5',
+      300: '#94a3b8',
+      400: '#64748b',
+      500: '#475569',
+      600: '#334155',
+      700: '#1e293b',
+      800: '#141c2f',
+      900: '#0a1220',
     },
+    accent: {
+      400: '#38bdf8',
+      500: '#0ea5e9',
+      600: '#0284c7',
+      700: '#0369a1',
+    },
+  },
+  surface: {
+    base: '#050a1a',
+    muted: '#070f24',
+    elevated: '#0d1b33',
+    highlight: '#132347',
+    border: 'rgba(148, 163, 184, 0.18)',
+    glow: 'rgba(14, 165, 233, 0.35)',
+  },
+  gradients: {
+    midnight: 'linear-gradient(135deg, rgba(8,18,41,1) 0%, rgba(5,10,26,1) 40%, rgba(9,20,48,1) 100%)',
+    card: 'linear-gradient(135deg, rgba(17,31,55,0.85) 0%, rgba(11,22,44,0.6) 100%)',
+    accent: 'linear-gradient(135deg, #2563eb 0%, #38bdf8 100%)',
   },
   spacing: {
     1: '0.25rem',
@@ -143,7 +162,7 @@ export const kpiColors = {
   visitors: theme.colors.primary,
   signups: theme.colors.success,
   conversionRate: theme.colors.warning,
-  revenue: theme.colors.success,
+  revenue: theme.colors.accent,
   avgLatencyMs: theme.colors.warning,
   errorRate: theme.colors.error,
 };
@@ -151,11 +170,11 @@ export const kpiColors = {
 // Chart color palette
 export const chartColors = [
   theme.colors.primary[500],
+  theme.colors.accent[500],
   theme.colors.success[500],
+  '#a855f7', // purple
+  '#22d3ee', // cyan
   theme.colors.warning[500],
-  theme.colors.error[500],
-  '#8b5cf6', // purple
-  '#06b6d4', // cyan
   '#f97316', // orange
-  '#84cc16', // lime
+  '#f43f5e', // rose
 ];

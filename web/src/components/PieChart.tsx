@@ -72,7 +72,7 @@ export const PieChart: React.FC<PieChartProps> = ({
   if (!data || data.length === 0) {
     return (
       <ChartContainer height={height} className={className}>
-        <div className="flex items-center justify-center h-full text-gray-500">
+        <div className="flex h-full items-center justify-center text-sm text-slate-500">
           No data available
         </div>
       </ChartContainer>
@@ -94,6 +94,8 @@ export const PieChart: React.FC<PieChartProps> = ({
             fill="#8884d8"
             dataKey="value"
             nameKey="label"
+            stroke="#020617"
+            strokeWidth={2}
           >
             {chartData.map((entry, index) => (
               <Cell key={`cell-${index}`} fill={entry.fill} />

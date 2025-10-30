@@ -65,7 +65,7 @@ export const LineChart: React.FC<LineChartProps> = ({
         cy={cy}
         r={4}
         fill={fill || stroke}
-        stroke={theme.colors.gray[100]}
+        stroke="#020617"
         strokeWidth={2}
         className="hover:r-6 transition-all duration-200"
       />
@@ -75,7 +75,7 @@ export const LineChart: React.FC<LineChartProps> = ({
   if (!data || data.length === 0) {
     return (
       <ChartContainer height={height} className={className}>
-        <div className="flex items-center justify-center h-full text-gray-500">
+        <div className="flex h-full items-center justify-center text-sm text-slate-500">
           No data available
         </div>
       </ChartContainer>
@@ -97,8 +97,7 @@ export const LineChart: React.FC<LineChartProps> = ({
           {showGrid && (
             <CartesianGrid
               strokeDasharray="3 3"
-              stroke={theme.colors.gray[200]}
-              opacity={0.5}
+              stroke="rgba(148, 163, 184, 0.14)"
             />
           )}
 
@@ -106,14 +105,14 @@ export const LineChart: React.FC<LineChartProps> = ({
             dataKey="displayDate"
             axisLine={false}
             tickLine={false}
-            tick={{ fontSize: 12, fill: theme.colors.gray[600] }}
+            tick={{ fontSize: 12, fill: 'rgba(226, 232, 240, 0.75)' }}
             dy={10}
           />
 
           <YAxis
             axisLine={false}
             tickLine={false}
-            tick={{ fontSize: 12, fill: theme.colors.gray[600] }}
+            tick={{ fontSize: 12, fill: 'rgba(226, 232, 240, 0.75)' }}
             tickFormatter={(value) => formatYAxisTick(value, lines[0]?.dataKey || '')}
             dx={-10}
           />
@@ -124,12 +123,13 @@ export const LineChart: React.FC<LineChartProps> = ({
               type="monotone"
               dataKey={line.dataKey}
               stroke={line.color}
-              strokeWidth={2}
+              strokeWidth={2.5}
+              strokeLinecap="round"
               dot={<CustomDot />}
               activeDot={{
                 r: 6,
                 fill: line.color,
-                stroke: theme.colors.gray[100],
+                stroke: '#020617',
                 strokeWidth: 2,
                 className: 'animate-pulse',
               }}
