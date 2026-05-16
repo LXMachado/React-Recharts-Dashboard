@@ -41,5 +41,9 @@
     "typescript"
   ],
   "author": "Mini Analytics Dashboard",
-  "license": "MIT"
+  "license": "MIT",
+  "overrides": {
+    "lodash": "4.18.1",
+    "lodash-es": "4.18.1"
+  }
 }
